@@ -23,6 +23,12 @@ Layer 3 consists of many seperated codebases of which code resides within the sa
 
 Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 
-
+## CI/CD
+- Commit a template code
+- This tiggers a pipeline
+- Create a stack from template
+- Run Lint and Nag and Drift check
+- Prep Change Sets
+- Deploy
 
 ## Infrastructre and application code separation
