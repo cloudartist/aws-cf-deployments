@@ -32,3 +32,26 @@ Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 - Deploy
 
 ## Infrastructre and application code separation
+
+
+## Deployments
+sandbox
+```
+# ini style
+aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides $(cat parameters/environments/sandbox/network.ini) --tags $(cat parameters/environments/sandbox/tags.ini) --region eu-west-1
+
+# json style
+aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides file://parameters/environments/dev/network.ini --tags file://parameters/environments/dev/tags.ini --region eu-west-1
+```
+
+
+dev
+```
+# ini style
+aws cloudformation deploy --template-file templates/network.yaml --stack-name dev-network --parameter-overrides $(cat parameters/environments/dev/network.ini) --tags $(cat parameters/environments/dev/tags.ini) --region eu-west-1
+```
+
+## Delete stack
+```
+aws cloudformation delete-stack --stack-name dev-network
+```

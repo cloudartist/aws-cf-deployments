@@ -1,0 +1,10 @@
+[
+    {
+      "ParameterKey": "EnvironmentName",
+      "ParameterValue": "sandbox"
+    },
+    {
+      "ParameterKey": "Customer",
+      "ParameterValue": "Google"
+    }
+]
