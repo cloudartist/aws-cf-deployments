@@ -1,6 +1,9 @@
 # aws-cf-deployments
 Cloud Formation infrastructure deployments 
 
+## Deployment status
+[![CI](https://github.com/cloudartist/aws-cf-deployments/actions/workflows/main.yml/badge.svg)](https://github.com/cloudartist/aws-cf-deployments/actions/workflows/main.yml)
+
 ## Requirement
 Multi environment setup witin a single AWS account (one account per external customer)
 
