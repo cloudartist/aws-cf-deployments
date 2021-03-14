@@ -6,7 +6,7 @@
 # Examples:
 # ./local-cf-deploy.sh -e sandbox -s 
 
-set -o errexit 
+# set -o errexit 
 set -o pipefail 
 set -o nounset 
 set -o xtrace 
@@ -35,18 +35,28 @@ fi
 environment=${e}
 cf_infra_layer=${l}
 
+# Wierdy enough when no changes cf exiits with 255 code and fails pipeline runs
+
+cloudformation () 
+{
+STDERR=$(( aws cloudformation "$@" ) 2>&1)
+ERROR_CODE=$?
+echo ${STDERR} 1>&2
+if [[ "${ERROR_CODE}" -eq "255" && "${STDERR}" =~ "No changes to deploy" ]]; then exit 0; fi 
+exit ${ERROR_CODE}
+}
 
 if [[ "${environment}" == "global" ]]
 then
     echo "Deploying global infrastructure"
-    aws cloudformation deploy \
+    acloudformation deploy \
     --stack-name ${environment}-${cf_infra_layer} \
     --template-file infrastructure/global/${cf_infra_layer}.yaml \
     --parameter-overrides $(cat parameters/global/${cf_infra_layer}.ini) \
     --tags $(cat parameters/global/tags.ini)     
 else
     echo "Deploying ${environment} infrastructure"
-    aws cloudformation deploy \
+    cloudformation deploy \
     --stack-name ${environment}-${cf_infra_layer} \
     --template-file infrastructure/environment/${cf_infra_layer}.yaml \
     --parameter-overrides $(cat parameters/environments/${environment}/${cf_infra_layer}.ini) \
