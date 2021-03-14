@@ -17,15 +17,12 @@ This demo will be based only on 2 first envs, for sake of simplicty
 
 ## Idea
 In order to achive desired outcome of seperating env workloads within a single AWS account the following Cloud Formation layering is proposed
-- Layer 0 - Global (IAM setup with specific wildcard policies) #TODO - Readme link to files 
-- Layer 1 - Environment (Base env infra - VPC, Subnets, NAT GW)
-- Layer 2 - Platform (optional) (Databases, shared SNS topics, SQS, Kinesis, ECS Cluster) 
-- Layer 3 - Application (Lambda, API GW, ECS Service)
+- [Layer 0](infrastructure/global/README.md) - Global (IAM setup with specific wildcard policies) 
+- [Layer 1](infrastructure/environment/network.yaml) - Environment (Base env infra - VPC, Subnets, NAT GW)
+- [Layer 2](infrastructure/environment/platform.yaml) - Platform (optional) (Databases, shared SNS topics, SQS, Kinesis, ECS Cluster) 
+- [Layer 3](https://github.com/mtaracha/my-python-lambda) - Application (Lambda, API GW, ECS Service)
 
 Layer 3 consists of many seperated codebases of which code resides within the same repository as application source code and can be deployed independently.
-
-Layer 3 code example - https://github.com/mtaracha/my-python-lambda
-
 
 ## How to start
 1. Add your aws_access_key_id & aws_secret_access_key to your shell for local deployments and to Github project secrets.
@@ -46,10 +43,10 @@ Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 ```
 ./local-cf-deploy.sh -e sandbox -l platform
 ```
-5. Start deploy your apps/apis on top see Lambda repo
+5. Start deploying your apps/apis 
 
 
-### Change Sets - plan changes
+## WIP
 
 
 ## CI/CD
@@ -59,9 +56,6 @@ Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 - Run Lint and Nag and Drift check
 - Prep Change Sets
 - Deploy
-
-## Infrastructre and application code separation
-
 
 ## Deployments
 sandbox
