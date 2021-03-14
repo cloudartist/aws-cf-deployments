@@ -26,6 +26,32 @@ Layer 3 consists of many seperated codebases of which code resides within the sa
 
 Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 
+
+## How to start
+1. Add your aws_access_key_id & aws_secret_access_key to your shell for local deployments and to Github project secrets.
+2. Deploy global infrastructure
+   
+```
+./local-cf-deploy.sh -e global -l s3
+```
+3. Deploy env networking 
+
+
+```
+./local-cf-deploy.sh -e sandbox -l network
+```
+   
+4. Deploy env platform
+
+```
+./local-cf-deploy.sh -e sandbox -l platform
+```
+5. Start deploy your apps/apis on top see Lambda repo
+
+
+### Change Sets - plan changes
+
+
 ## CI/CD
 - Commit a template code
 - This tiggers a pipeline
@@ -41,7 +67,11 @@ Layer 3 code example - https://github.com/mtaracha/my-python-lambda
 sandbox
 ```
 # ini style
-aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides $(cat parameters/environments/sandbox/network.ini) --tags $(cat parameters/environments/sandbox/tags.ini) --region eu-west-1
+aws cloudformation deploy \
+--stack-name sandbox-network \
+--template-file templates/network.yaml \
+--parameter-overrides $(cat parameters/environments/sandbox/network.ini) \
+--tags $(cat parameters/environments/sandbox/tags.ini) 
 
 # json style parameters
 aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides file://parameters/environments/sandbox/network.json --tags $(cat parameters/environments/sandbox/tags.ini)--region eu-west-1
@@ -57,6 +87,7 @@ aws cloudformation deploy \
 --tags $(cat parameters/environments/sandbox/tags.ini) | tee change-set.txt
 
 CHANGE_SET_ARN=$(cat change-set.txt | grep cloudformation | awk '{print $5'})
+if [ -z "${CHANGE_SET_ARN}" ]; then skip next steps
 aws cloudformation describe-change-set --change-set-name $CHANGE_SET_ARN
 echo "Do you want to execute above changes?"
 # TODO add link to console for visual change sets

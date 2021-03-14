@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  EnvironmentName:
+    Description: Environment name
+    Type: String
+    Default: Sandbox
+    AllowedValues: [Sandbox, Dev, Staging, Production]    
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Default: sandbox
+  MyStackInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t3.small
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+  LatestAmiId:
+    Type:  'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+Resources:
+  myStackWithParams:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/cloudformation-templates-cloudastic/ec2.yaml
+      Parameters:
+        InstanceType: !Ref 'MyStackInstanceType'
+        KeyName: !Ref 'KeyName'
+        SubnetId: !ImportValue 
+          'Fn::Sub': '${EnvironmentName}-PublicSubnet1'
+        VpcId: !ImportValue
+          'Fn::Sub': '${EnvironmentName}-Vpc'

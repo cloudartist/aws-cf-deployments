@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  CloudFormationTemplatesBucketName:
+    Description: Name of S3 bucket where global templates for nested stack will be stored
+    Type: String
+
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref CloudFormationTemplatesBucketName
+      VersioningConfiguration:
+        Status: Enabled
