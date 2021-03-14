@@ -31,10 +31,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      # Runs a set of commands using the runners shell
       - name: Cloudformation Network Layer
         run: |
           echo "Deploying network layer with CF!"
-          aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network \
-          --parameter-overrides $(cat parameters/environments/sandbox/network.ini) \
-          --tags $(cat parameters/environments/sandbox/tags.ini)
+          ./local-cf-deploy.sh -e sandbox -l network
+
+      - name: Cloudformation Platform Layer
+        run: |
+          echo "Deploying network layer with CF!"
+          ./local-cf-deploy.sh -e sandbox -l platform
