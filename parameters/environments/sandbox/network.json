@@ -1,10 +1,5 @@
-[
-    {
-      "ParameterKey": "EnvironmentName",
-      "ParameterValue": "sandbox"
-    },
-    {
-      "ParameterKey": "AppServerInstanceType",
-      "ParameterValue": "t2.large"
-    }
-]
+{
+  "Parameters": {   
+    "EnvironmentName": "sandbox-test"   
+  }
+}

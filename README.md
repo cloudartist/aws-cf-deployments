@@ -43,10 +43,26 @@ sandbox
 # ini style
 aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides $(cat parameters/environments/sandbox/network.ini) --tags $(cat parameters/environments/sandbox/tags.ini) --region eu-west-1
 
-# json style
-aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides file://parameters/environments/dev/network.ini --tags file://parameters/environments/dev/tags.ini --region eu-west-1
+# json style parameters
+aws cloudformation deploy --template-file templates/network.yaml --stack-name sandbox-network --parameter-overrides file://parameters/environments/sandbox/network.json --tags $(cat parameters/environments/sandbox/tags.ini)--region eu-west-1
 ```
 
+## Create change set 
+```
+aws cloudformation deploy \
+--no-execute-changeset \
+--stack-name sandbox-network \
+--template-file templates/network.yaml \
+--parameter-overrides $(cat parameters/environments/sandbox/network.ini) \
+--tags $(cat parameters/environments/sandbox/tags.ini) | tee change-set.txt
+
+CHANGE_SET_ARN=$(cat change-set.txt | grep cloudformation | awk '{print $5'})
+aws cloudformation describe-change-set --change-set-name $CHANGE_SET_ARN
+echo "Do you want to execute above changes?"
+# TODO add link to console for visual change sets
+aws cloudformation execute-change-set --change-set-name $CHANGE_SET_ARN
+
+```
 
 dev
 ```
