@@ -34,9 +34,9 @@ jobs:
       - name: Cloudformation Network Layer
         run: |
           echo "Deploying network layer with CF!"
-          ./local-cf-deploy.sh -e sandbox -l network
+          bash +x local-cf-deploy.sh -e sandbox -l network
 
       - name: Cloudformation Platform Layer
         run: |
           echo "Deploying network layer with CF!"
-          ./local-cf-deploy.sh -e sandbox -l platform
+          bash +x local-cf-deploy.sh -e sandbox -l platform
