@@ -49,7 +49,7 @@ exit ${ERROR_CODE}
 if [[ "${environment}" == "global" ]]
 then
     echo "Deploying global infrastructure"
-    acloudformation deploy \
+    cloudformation deploy \
     --stack-name ${environment}-${cf_infra_layer} \
     --template-file infrastructure/global/${cf_infra_layer}.yaml \
     --parameter-overrides $(cat parameters/global/${cf_infra_layer}.ini) \

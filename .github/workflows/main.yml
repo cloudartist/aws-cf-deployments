@@ -31,12 +31,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
-      - name: Cloudformation Network Layer
+      - name: Cloudformation Deploy Global 
+        run: |
+          echo "Deploying network layer with CF!"
+          bash +x local-cf-deploy.sh -e global -l s3         
+
+      - name: Cloudformation Deploy Network
         run: |
           echo "Deploying network layer with CF!"
           bash +x local-cf-deploy.sh -e sandbox -l network
 
-      - name: Cloudformation Platform Layer
+      - name: Cloudformation Deploy Platform
         run: |
           echo "Deploying network layer with CF!"
           bash +x local-cf-deploy.sh -e sandbox -l platform
